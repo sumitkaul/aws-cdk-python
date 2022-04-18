@@ -1,24 +1,42 @@
+
+from constructs import Construct
+
 from aws_cdk import (
-    aws_iam as iam,
-    aws_sqs as sqs,
-    aws_sns as sns,
-    aws_sns_subscriptions as subs,
+    aws_lambda,
+    aws_apigateway, 
+    aws_kinesis as kinesis,
     core
 )
 
+# from .hitcounter import HitCounter
 
 class CdkWorkshopStack(core.Stack):
 
     def __init__(self, scope: core.Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        queue = sqs.Queue(
-            self, "CdkWorkshopQueue",
-            visibility_timeout=core.Duration.seconds(300),
+        
+        my_kinesis= kinesis.Stream(self, "MyFirstStream",
+        stream_name="my-awesome-stream"
         )
+        
+        # my_lambda = aws_lambda.Function(self, 'HelloHandler', 
+        #     runtime=aws_lambda.Runtime.PYTHON_3_7,       
+        #     code=aws_lambda.Code.from_asset('lambda'), 
+        #     handler='hello.handler',
+        # )
 
-        topic = sns.Topic(
-            self, "CdkWorkshopTopic"
-        )
+        # hello_with_counter = HitCounter(self, 'HelloHitCounter',
+        #     downstream = my_lambda,
+        # )
 
-        topic.add_subscription(subs.SqsSubscription(queue))
+        # aws_apigateway.LambdaRestApi(self,'Endpoint', 
+        #     handler=hello_with_counter._handler,
+
+        # )
+
+        # aws_s3 
+        #     path folder 
+        # # mykinesis = aws_kinesis.Stream(self, 'MyFirstStream',
+        # #     stream_name = "kinesisName"
+        # # ) 
